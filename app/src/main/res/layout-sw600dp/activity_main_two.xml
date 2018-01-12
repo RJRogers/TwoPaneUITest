@@ -11,11 +11,11 @@
     -->
 
     <!-- The static MasterListFragment -->
-    <fragment
-        android:id="@+id/master_list_fragment"
-        android:name="com.example.android.android_me.ui.MasterListFragment"
-        android:layout_width="400dp"
-        android:layout_height="match_parent" />
+    <!--<fragment-->
+        <!--android:id="@+id/master_list_fragment"-->
+        <!--android:name="com.example.android.android_me.ui.MasterListFragment"-->
+        <!--android:layout_width="400dp"-->
+        <!--android:layout_height="match_parent" />-->
 
     <!-- A small divider -->
     <View
