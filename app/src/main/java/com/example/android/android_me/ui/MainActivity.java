@@ -16,170 +16,202 @@
 
 package com.example.android.android_me.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.android_me.R;
+import com.example.android.android_me.api.RecipeService;
 import com.example.android.android_me.data.AndroidImageAssets;
+import com.example.android.android_me.data.Recipe;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 // This activity is responsible for displaying the master list of all images
 // Implement the MasterListFragment callback, OnImageClickListener
-public class MainActivity extends AppCompatActivity implements MasterListFragment.OnImageClickListener{
+public class MainActivity extends AppCompatActivity{
 
-    // Variables to store the values for the list index of the selected images
-    // The default value will be index = 0
-    private int headIndex;
-    private int bodyIndex;
-    private int legIndex;
+    public static final String LOG_TAG = "myLogs";
+    List<Recipe> recipeList = new ArrayList<>();
+    SimpleItemRecyclerViewAdapter simpleItemRecyclerViewAdapter;
 
-    // Track whether to display a two-pane or single-pane UI
-    // A single-pane display refers to phone screens, and two-pane to larger tablet screens
-    private boolean mTwoPane;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        if(findViewById(R.id.android_me_linear_layout) != null) {
-            // This LinearLayout will only initially exist in the two-pane tablet case
-            mTwoPane = true;
-
-            // Change the GridView to space out the images more on tablet
-            GridView gridView = (GridView) findViewById(R.id.images_grid_view);
-            gridView.setNumColumns(2);
-
-
-
-            if(savedInstanceState == null) {
-                // In two-pane mode, add initial BodyPartFragments to the screen
-                FragmentManager fragmentManager = getSupportFragmentManager();
-
-                // Creating a new head fragment
-                BodyPartFragment headFragment = new BodyPartFragment();
-                headFragment.setImageIds(AndroidImageAssets.getHeads());
-                // Add the fragment to its container using a transaction
-                fragmentManager.beginTransaction()
-                        .add(R.id.head_container, headFragment)
-                        .commit();
-
-                // New body fragment
-                BodyPartFragment bodyFragment = new BodyPartFragment();
-                bodyFragment.setImageIds(AndroidImageAssets.getBodies());
-                fragmentManager.beginTransaction()
-                        .add(R.id.body_container, bodyFragment)
-                        .commit();
-
-                // New leg fragment
-                BodyPartFragment legFragment = new BodyPartFragment();
-                legFragment.setImageIds(AndroidImageAssets.getLegs());
-                fragmentManager.beginTransaction()
-                        .add(R.id.leg_container, legFragment)
-                        .commit();
-            }
-        } else {
-            // We're in single-pane mode and displaying fragments on a phone in separate activities
-            mTwoPane = false;
-        }
+        getRecipes();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle(getTitle());
 
 
     }
 
-    // Define the behavior for onImageSelected
-    public void onImageSelected(int position) {
-        // Create a Toast that displays the position that was clicked
-        Toast.makeText(this, "Position clicked = " + position, Toast.LENGTH_SHORT).show();
 
-        // bodyPartNumber will be = 0 for the head fragment, 1 for the body, and 2 for the leg fragment
-        // Dividing by 12 gives us these integer values because each list of images resources has a size of 12
-        int bodyPartNumber = position /12;
 
-        // Store the correct list index no matter where in the image list has been clicked
-        // This ensures that the index will always be a value between 0-11
-        int listIndex = position - 12*bodyPartNumber;
+    public void getRecipes(){
 
-        // Handle the two-pane case and replace existing fragments right when a new image is selected from the master list
-        if (mTwoPane) {
-            // Create two=pane interaction
+        String ROOT_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/";
 
-            BodyPartFragment newFragment = new BodyPartFragment();
 
-            // Set the currently displayed item for the correct body part fragment
-            switch (bodyPartNumber) {
-                case 0:
-                    // A head image has been clicked
-                    // Give the correct image resources to the new fragment
-                    newFragment.setImageIds(AndroidImageAssets.getHeads());
-                    newFragment.setListIndex(listIndex);
-                    // Replace the old head fragment with a new one
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.head_container, newFragment)
-                            .commit();
-                    break;
-                case 1:
-                    newFragment.setImageIds(AndroidImageAssets.getBodies());
-                    newFragment.setListIndex(listIndex);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.body_container, newFragment)
-                            .commit();
-                    break;
-                case 2:
-                    newFragment.setImageIds(AndroidImageAssets.getLegs());
-                    newFragment.setListIndex(listIndex);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.leg_container, newFragment)
-                            .commit();
-                    break;
-                default:
-                    break;
-            }
-        } else {
+        Retrofit RETROFIT = new Retrofit.Builder()
+                .baseUrl(ROOT_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-            // Handle the single-pane phone case by passing information in a Bundle attached to an Intent
+        RecipeService service = RETROFIT.create(RecipeService.class);
 
-            switch (bodyPartNumber) {
-                case 0:
-                    headIndex = listIndex;
-                    break;
-                case 1:
-                    bodyIndex = listIndex;
-                    break;
-                case 2:
-                    legIndex = listIndex;
-                    break;
-                default:
-                    break;
-            }
+        Call<List<Recipe>> call = service.getMyJson();
+        call.enqueue(new Callback<List<Recipe>>() {
+            @Override
+            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
+                Log.d(LOG_TAG, "Got here");
+                if (!response.isSuccessful()) {
+                    Log.d(LOG_TAG, "No Success");
+                }
 
-            // Put this information in a Bundle and attach it to an Intent that will launch an AndroidMeActivity
-            Bundle b = new Bundle();
-            b.putInt("headIndex", headIndex);
-            b.putInt("bodyIndex", bodyIndex);
-            b.putInt("legIndex", legIndex);
+                Log.d(LOG_TAG, "Got here");
+                String string = response.body().toString();
 
-            // Attach the Bundle to an intent
-            final Intent intent = new Intent(this, SecondActivity.class);
-            intent.putExtras(b);
+                Log.d(LOG_TAG, string);
 
-            startActivity(intent);
 
-//            // The "Next" button launches a new AndroidMeActivity
-//            Button nextButton = (Button) findViewById(R.id.next_button);
-//            nextButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    startActivity(intent);
+                recipeList = response.body();
+
+                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.item_list);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(layoutManager);
+
+                simpleItemRecyclerViewAdapter = new SimpleItemRecyclerViewAdapter(recipeList);
+                recyclerView.setAdapter(simpleItemRecyclerViewAdapter);
+
+
+//                if (findViewById(R.id.item_detail_container) != null) {
+//                    mTwoPane = true;
 //                }
-//            });
-        }
+
+
+                Log.e(LOG_TAG, "LOGS " + recipeList.size());
+
+
+
+
+                for (int i = 0; i < recipeList.size(); i++) {
+                    String newString = recipeList.get(i).getName();
+
+                    Log.d(LOG_TAG, newString + " ****************");
+
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
+                Log.e("getRecipes throwable: ", t.getMessage());
+                t.printStackTrace();
+
+            }
+        });
+
 
     }
+
+    public class SimpleItemRecyclerViewAdapter
+            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+
+        private final List<Recipe> mValues;
+
+        public SimpleItemRecyclerViewAdapter(List<Recipe> items) {
+            mValues = items;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_list_content, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+
+
+            holder.mItem = mValues.get(position);
+
+
+            holder.mContentView.setText(mValues.get(position).getName());
+
+
+            Recipe recipe = simpleItemRecyclerViewAdapter.mValues.get(position);
+            recipe.addItem(recipe);
+
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                        Context context = v.getContext();
+                       Intent intent = new Intent(context, SecondActivity.class);
+                        intent.putExtra("intent", holder.mItem.getId());
+                        context.startActivity(intent);
+
+
+
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mValues.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public  View mView;
+            public TextView mContentView;
+            public Recipe mItem;
+
+
+            public ViewHolder(View view) {
+                super(view);
+                mView = view;
+                mContentView = (TextView) view.findViewById(R.id.content);
+
+            }
+
+            @Override
+            public String toString() {
+                return super.toString() + " '" + mContentView.getText() + "'";
+            }
+        }
+    }
+
+
+
 
 }
