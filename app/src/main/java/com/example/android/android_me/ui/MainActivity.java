@@ -19,6 +19,7 @@ package com.example.android.android_me.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,7 +53,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity{
 
     public static final String LOG_TAG = "myLogs";
-    List<Recipe> recipeList = new ArrayList<>();
+    ArrayList<Recipe> recipeList = new ArrayList<>();
     SimpleItemRecyclerViewAdapter simpleItemRecyclerViewAdapter;
 
 
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity{
                 Log.d(LOG_TAG, string);
 
 
-                recipeList = response.body();
+                recipeList = (ArrayList) response.body();
 
                 RecyclerView recyclerView = (RecyclerView) findViewById(R.id.item_list);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -176,9 +177,13 @@ public class MainActivity extends AppCompatActivity{
                 public void onClick(View v) {
 
                         Context context = v.getContext();
-                       Intent intent = new Intent(context, SecondActivity.class);
-                        intent.putExtra("intent", holder.mItem.getId());
-                        context.startActivity(intent);
+
+
+                    Intent intent = new Intent(context, SecondActivity.class);
+                    intent.putParcelableArrayListExtra("list", recipeList);
+                    intent.putExtra("intent", holder.mItem.getId());
+                    context.startActivity(intent);
+
 
 
 

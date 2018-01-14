@@ -42,6 +42,21 @@ public class AndroidImageAssets {
         add(R.drawable.head12);
     }};
 
+
+    private static final List<String> words = new ArrayList<String>() {{
+        add("Hello");
+        add("Hello 1");
+        add("Hello 2");
+        add("Hello 3");
+        add("Hello 4");
+        add("Hello 5");
+        add("Hello 6");
+        add("Hello 7");
+        add("Hello 8");
+    }};
+
+
+
     private static final List<Integer> bodies = new ArrayList<Integer>() {{
         add(R.drawable.body1);
         add(R.drawable.body2);
@@ -91,6 +106,10 @@ public class AndroidImageAssets {
 
     public static List<Integer> getLegs() {
         return legs;
+    }
+
+    public static List<String> getWords() {
+        return words;
     }
 
     // Returns a list of all the images combined: heads, bodies, and legs in that order

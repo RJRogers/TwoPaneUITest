@@ -162,6 +162,7 @@ public class Recipe implements Parcelable {
         dest.writeString(name);
         dest.writeString(image);
         dest.writeTypedList(ingredients);
+        dest.writeTypedList(steps);
     }
 
     @SuppressWarnings("unused")
