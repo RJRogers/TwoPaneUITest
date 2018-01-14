@@ -57,11 +57,40 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
 
 
 
-        steps = myList.get(result - 1).getSteps();
+        steps = (ArrayList) myList.get(result - 1).getSteps();
         Log.d(LOG_TAG, steps.toString());
 
 
+        if(findViewById(R.id.fragment_container) != null){
 
+            mTwoPane = true;
+
+            if(savedInstanceState == null){
+
+                //use setArguments and getArguments in StepsFragment
+
+                Bundle arguments = new Bundle();
+//                arguments.putString(ItemDetailFragment.ARG_ITEM_ID,
+//                        getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_ID));
+
+                arguments.putParcelableArrayList("myList", myList);
+
+                StepsFragment fragment = new StepsFragment();
+
+                fragment.setArguments(arguments);
+
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, fragment)
+                        .commit();
+
+
+
+
+            }
+
+
+
+        }
 
 
 
@@ -118,6 +147,11 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
                 fragmentManager.beginTransaction()
                         .add(R.id.leg_container, legFragment)
                         .commit();
+
+
+
+
+
             }
         } else {
             // We're in single-pane mode and displaying fragments on a phone in separate activities
