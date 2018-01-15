@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.android_me.R;
+import com.example.android.android_me.data.Ingredients;
 import com.example.android.android_me.data.Recipe;
 import com.example.android.android_me.data.Steps;
 
@@ -32,6 +33,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
     ArrayList<Recipe> myList;
     List<Steps> myStepsList;
+    List <Ingredients> ingredients;
 
     private RecyclerView recyclerView;
     StepItemRecyclerViewAdapter stepItemRecyclerViewAdapter;
@@ -54,6 +56,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
         Log.d(LOG_TAG, "TTTTTTTTTTTTTT " + myList.toString());
 
         myStepsList = myList.get(result).getSteps();
+        ingredients = myList.get(result).getIngredients();
 
 
     }
@@ -71,8 +74,8 @@ public class StepsFragment extends android.support.v4.app.Fragment {
         stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myStepsList);
         recyclerView.setAdapter(stepItemRecyclerViewAdapter);
 
-
-
+        TextView textView = (TextView) rootView.findViewById(R.id.text_view);
+        textView.setText(ingredients.toString());
 
 
         return rootView;
