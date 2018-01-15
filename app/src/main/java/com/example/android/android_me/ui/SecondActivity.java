@@ -39,6 +39,7 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
     List<Steps> steps;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +75,7 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
 //                        getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_ID));
 
                 arguments.putParcelableArrayList("myList", myList);
+                arguments.putInt("result", result);
 
                 StepsFragment fragment = new StepsFragment();
 

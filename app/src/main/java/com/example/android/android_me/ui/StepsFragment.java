@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.android.android_me.R;
 import com.example.android.android_me.data.Recipe;
+import com.example.android.android_me.data.Steps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,12 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
 
     ArrayList<Recipe> myList;
+    List<Steps> myStepsList;
+
     private RecyclerView recyclerView;
     StepItemRecyclerViewAdapter stepItemRecyclerViewAdapter;
+
+    int result;
 
 
     @Override
@@ -40,11 +45,15 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
 
         //Need to pass steps to this fragment from SecondActivity
+        //Need to pass the number clicked here too
 
 
         myList = getArguments().getParcelableArrayList("myList");
-
+        result = getArguments().getInt("result") - 1;
+        Log.d(LOG_TAG, "This is the result " + result);
         Log.d(LOG_TAG, "TTTTTTTTTTTTTT " + myList.toString());
+
+        myStepsList = myList.get(result).getSteps();
 
 
     }
@@ -59,7 +68,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
         recyclerView = (RecyclerView) rootView
                 .findViewById(R.id.my_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myList);
+        stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myStepsList);
         recyclerView.setAdapter(stepItemRecyclerViewAdapter);
 
 
@@ -73,9 +82,12 @@ public class StepsFragment extends android.support.v4.app.Fragment {
     public class StepItemRecyclerViewAdapter
             extends RecyclerView.Adapter<StepItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<Recipe> mValues;
+//        private final List<Recipe> mValues;
+            private final List<Steps> mValues;
 
-        public StepItemRecyclerViewAdapter(List<Recipe> items) {
+
+
+        public StepItemRecyclerViewAdapter(List<Steps> items) {
 
             mValues = items;
         }
@@ -94,11 +106,11 @@ public class StepsFragment extends android.support.v4.app.Fragment {
             holder.mItem = mValues.get(position);
 
 
-            holder.mContentView.setText(mValues.get(position).getName());
+            holder.mContentView.setText(mValues.get(position).getShortDescription());
 
 
-            Recipe recipe = stepItemRecyclerViewAdapter.mValues.get(position);
-            recipe.addItem(recipe);
+            Steps step = stepItemRecyclerViewAdapter.mValues.get(position);
+
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,7 +139,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public  View mView;
             public TextView mContentView;
-            public Recipe mItem;
+            public Steps mItem;
 
 
             public ViewHolder(View view) {
