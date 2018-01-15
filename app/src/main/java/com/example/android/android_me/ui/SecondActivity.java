@@ -1,9 +1,11 @@
 package com.example.android.android_me.ui;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +40,7 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
     private boolean mTwoPane;
     ArrayList<Recipe> myList;
     List<Steps> steps;
+    android.support.v7.app.ActionBar actionBar;
 
 
 
@@ -45,6 +48,12 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_two);
+
+
+
+        actionBar = getSupportActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
 //        ArrayList<String> myList = (ArrayList<String>) getIntent().getSerializableExtra("StringKey");
 

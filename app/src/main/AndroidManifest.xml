@@ -22,7 +22,8 @@
 
         <activity android:name=".ui.AndroidMeActivity" />
 
-        <activity android:name=".ui.SecondActivity" />
+        <activity android:name=".ui.SecondActivity"
+            />
 
     </application>
 
