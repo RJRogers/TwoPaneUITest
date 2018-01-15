@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity{
         private final List<Recipe> mValues;
 
         public SimpleItemRecyclerViewAdapter(List<Recipe> items) {
+
             mValues = items;
         }
 
