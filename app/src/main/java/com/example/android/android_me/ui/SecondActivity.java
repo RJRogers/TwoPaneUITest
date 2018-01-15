@@ -58,16 +58,9 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
 //        ArrayList<String> myList = (ArrayList<String>) getIntent().getSerializableExtra("StringKey");
 
         myList = getIntent().getParcelableArrayListExtra("list");
-        Log.d(LOG_TAG, myList.get(0).toString() + "9999999999999999999999");
-
-
         String id = getIntent().getStringExtra("intent");
         int result = Integer.parseInt(id);
-
         Log.d(LOG_TAG, "This is the intent id " + id + " " + result);
-
-
-
         steps = (ArrayList) myList.get(result - 1).getSteps();
         Log.d(LOG_TAG, steps.toString());
 
