@@ -64,9 +64,11 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
         getRecipes();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        toolbar.setTitle(getTitle());
+//        toolbar.setTitle(getTitle());
+
+        getSupportActionBar().setTitle("My Title");
 
 
     }

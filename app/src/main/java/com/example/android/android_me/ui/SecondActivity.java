@@ -54,6 +54,7 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
         actionBar = getSupportActionBar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("My Title");
 
 //        ArrayList<String> myList = (ArrayList<String>) getIntent().getSerializableExtra("StringKey");
 
