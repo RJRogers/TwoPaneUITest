@@ -26,6 +26,7 @@
     android:id="@+id/text_view"
     android:layout_width="800dp"
     android:layout_height="match_parent"
+    android:padding="10dp"
     >
 
 </TextView>
