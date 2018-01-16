@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity{
 
 //        toolbar.setTitle(getTitle());
 
-        getSupportActionBar().setTitle("My Title");
+        getSupportActionBar().setTitle("Baking app");
 
 
     }

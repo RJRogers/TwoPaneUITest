@@ -1,10 +1,7 @@
 package com.example.android.android_me.ui;
 
-import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,6 +36,8 @@ public class StepsFragment extends android.support.v4.app.Fragment {
     StepItemRecyclerViewAdapter stepItemRecyclerViewAdapter;
 
     int result;
+    List<String> ingredientsString;
+    String string;
 
 
     @Override
@@ -46,17 +45,31 @@ public class StepsFragment extends android.support.v4.app.Fragment {
         super.onCreate(savedInstanceState);
 
 
-        //Need to pass steps to this fragment from SecondActivity
-        //Need to pass the number clicked here too
-
-
         myList = getArguments().getParcelableArrayList("myList");
         result = getArguments().getInt("result") - 1;
-        Log.d(LOG_TAG, "This is the result " + result);
-        Log.d(LOG_TAG, "TTTTTTTTTTTTTT " + myList.toString());
-
         myStepsList = myList.get(result).getSteps();
         ingredients = myList.get(result).getIngredients();
+
+
+        //Create a String array for all ingredients strings
+        ingredientsString = new ArrayList<>();
+        ingredientsString.add("Ingredients" + "\n");
+
+        for(int x = 0; x < ingredients.size(); x++){
+
+            ingredientsString.add(ingredients.get(x).getIngredient() + " " + ingredients.get(x).getQuantity() + " " + ingredients.get(x).getMeasure());
+            Log.d(LOG_TAG, ingredientsString.get(x).toString());
+        }
+
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(String s : ingredientsString){
+            stringBuilder.append(s + "\n");
+        }
+
+        string = stringBuilder.toString();
+
 
 
     }
@@ -75,7 +88,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
         recyclerView.setAdapter(stepItemRecyclerViewAdapter);
 
         TextView textView = (TextView) rootView.findViewById(R.id.text_view);
-        textView.setText(ingredients.toString());
+        textView.setText(string);
 
 
         return rootView;
@@ -85,7 +98,6 @@ public class StepsFragment extends android.support.v4.app.Fragment {
     public class StepItemRecyclerViewAdapter
             extends RecyclerView.Adapter<StepItemRecyclerViewAdapter.ViewHolder> {
 
-//        private final List<Recipe> mValues;
             private final List<Steps> mValues;
 
 

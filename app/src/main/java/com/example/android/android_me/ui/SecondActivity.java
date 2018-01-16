@@ -54,16 +54,22 @@ public class SecondActivity extends AppCompatActivity implements MasterListFragm
         actionBar = getSupportActionBar();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("My Title");
+
 
 //        ArrayList<String> myList = (ArrayList<String>) getIntent().getSerializableExtra("StringKey");
 
         myList = getIntent().getParcelableArrayListExtra("list");
         String id = getIntent().getStringExtra("intent");
         int result = Integer.parseInt(id);
-        Log.d(LOG_TAG, "This is the intent id " + id + " " + result);
         steps = (ArrayList) myList.get(result - 1).getSteps();
+
+        Log.d(LOG_TAG, "This is the intent id " + id + " " + result);
         Log.d(LOG_TAG, steps.toString());
+
+        String nameString = myList.get(result - 1).getName();
+        Log.d(LOG_TAG, "The name of this recipe is " + nameString);
+
+        getSupportActionBar().setTitle(nameString);
 
 
         if(findViewById(R.id.fragment_container) != null){
