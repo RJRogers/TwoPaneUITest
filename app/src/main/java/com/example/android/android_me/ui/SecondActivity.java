@@ -108,10 +108,6 @@ public class SecondActivity extends AppCompatActivity {
                         .commit();
 
 
-
-
-
-
             }
 
 
