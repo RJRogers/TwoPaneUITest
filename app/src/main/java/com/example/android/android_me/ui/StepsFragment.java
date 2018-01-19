@@ -12,8 +12,11 @@ import android.widget.TextView;
 
 import com.example.android.android_me.R;
 import com.example.android.android_me.data.Ingredients;
+import com.example.android.android_me.data.Message;
 import com.example.android.android_me.data.Recipe;
 import com.example.android.android_me.data.Steps;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,13 +41,14 @@ public class StepsFragment extends android.support.v4.app.Fragment {
     int result;
     List<String> ingredientsString;
     String string;
+    Boolean mTwoPane;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        mTwoPane = getArguments().getBoolean("twoPane");
         myList = getArguments().getParcelableArrayList("myList");
         result = getArguments().getInt("result") - 1;
         myStepsList = myList.get(result).getSteps();
@@ -131,13 +135,29 @@ public class StepsFragment extends android.support.v4.app.Fragment {
                 @Override
                 public void onClick(View v) {
 
-//                    Context context = v.getContext();
-//
-//
-//                    Intent intent = new Intent(context, SecondActivity.class);
-//                    intent.putParcelableArrayListExtra("list", recipeList);
-//                    intent.putExtra("intent", holder.mItem.getId());
-//                    context.startActivity(intent);
+
+                    if(mTwoPane){
+                        Bundle args = new Bundle();
+
+                        args.putParcelableArrayList("myList", myList);
+                        args.putInt("result", result);
+                        EventBus.getDefault().postSticky(new Message(2, args));
+                        Log.d(LOG_TAG, "You clicked a button" + holder.mItem.toString());
+
+
+                    } else if( mTwoPane == false){
+
+                        Bundle args = new Bundle();
+
+                        args.putParcelableArrayList("myList", myList);
+                        args.putInt("result", result);
+                        EventBus.getDefault().postSticky(new Message(3, args));
+                        Log.d(LOG_TAG, "You clicked a button" + holder.mItem.toString());
+
+                    }
+
+
+
 
 
 
