@@ -141,8 +141,12 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
                         args.putParcelableArrayList("myList", myList);
                         args.putInt("result", result);
+                        args.putString("int", holder.mItem.getId());
                         EventBus.getDefault().postSticky(new Message(2, args));
                         Log.d(LOG_TAG, "You clicked a button" + holder.mItem.toString());
+
+
+//                        intent.putExtra("intent", holder.mItem.getId());
 
 
                     } else if( mTwoPane == false){
@@ -151,6 +155,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
                         args.putParcelableArrayList("myList", myList);
                         args.putInt("result", result);
+                        args.putString("int", holder.mItem.getId());
                         EventBus.getDefault().postSticky(new Message(3, args));
                         Log.d(LOG_TAG, "You clicked a button" + holder.mItem.toString());
 
