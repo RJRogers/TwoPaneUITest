@@ -156,6 +156,8 @@ public class SecondActivity extends AppCompatActivity {
 
 
 
+
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(Message event) {
 
