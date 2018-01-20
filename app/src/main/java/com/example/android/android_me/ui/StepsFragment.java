@@ -85,14 +85,17 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
 
-        recyclerView = (RecyclerView) rootView
-                .findViewById(R.id.my_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myStepsList);
-        recyclerView.setAdapter(stepItemRecyclerViewAdapter);
 
-        TextView textView = (TextView) rootView.findViewById(R.id.text_view);
-        textView.setText(string);
+
+
+
+            recyclerView = (RecyclerView) rootView
+                    .findViewById(R.id.my_recycler_view);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myStepsList);
+            recyclerView.setAdapter(stepItemRecyclerViewAdapter);
+            TextView textView = (TextView) rootView.findViewById(R.id.text_view);
+            textView.setText(string);
 
 
         return rootView;
