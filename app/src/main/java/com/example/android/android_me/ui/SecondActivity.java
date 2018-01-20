@@ -154,9 +154,17 @@ public class SecondActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(mTwoPane) {
 
 
+            startActivity(new Intent(SecondActivity.this, MainActivity.class));
+            finish();
+        }
 
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessage(Message event) {
