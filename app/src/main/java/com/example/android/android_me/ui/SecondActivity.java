@@ -1,22 +1,16 @@
 package com.example.android.android_me.ui;
 
-import android.app.ActionBar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.GridView;
-import android.widget.Toast;
+
 
 import com.example.android.android_me.R;
-import com.example.android.android_me.data.AndroidImageAssets;
 import com.example.android.android_me.data.Message;
 import com.example.android.android_me.data.Recipe;
 import com.example.android.android_me.data.Steps;
@@ -37,12 +31,11 @@ import static com.example.android.android_me.ui.MainActivity.LOG_TAG;
 public class SecondActivity extends AppCompatActivity {
 
 
-    // Track whether to display a two-pane or single-pane UI
-    // A single-pane display refers to phone screens, and two-pane to larger tablet screens
     private boolean mTwoPane;
     ArrayList<Recipe> myList;
     List<Steps> steps;
     android.support.v7.app.ActionBar actionBar;
+    StepsFragment fragment;
 
     //Eventbus
     @Override
@@ -70,18 +63,12 @@ public class SecondActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
-//        ArrayList<String> myList = (ArrayList<String>) getIntent().getSerializableExtra("StringKey");
-
         myList = getIntent().getParcelableArrayListExtra("list");
         String id = getIntent().getStringExtra("intent");
         int result = Integer.parseInt(id);
         steps = (ArrayList) myList.get(result - 1).getSteps();
 
-        Log.d(LOG_TAG, "This is the intent id " + id + " " + result);
-        Log.d(LOG_TAG, steps.toString());
-
         String nameString = myList.get(result - 1).getName();
-        Log.d(LOG_TAG, "The name of this recipe is " + nameString);
 
         getSupportActionBar().setTitle(nameString);
 
@@ -109,11 +96,6 @@ public class SecondActivity extends AppCompatActivity {
 
 
             }
-
-
-
-
-
 
 
 
@@ -183,7 +165,6 @@ public class SecondActivity extends AppCompatActivity {
 
             transaction.addToBackStack(null);
 
-//            // Commit the transaction
             transaction.commit();
 
             Log.d(LOG_TAG, "Eventbus worked");
@@ -193,7 +174,6 @@ public class SecondActivity extends AppCompatActivity {
 
         else if ( event.getMessage() == 3){
 
-
             Fragment newFragment = new DetailFragment();
 
             newFragment.setArguments(event.getBundle());
@@ -202,23 +182,19 @@ public class SecondActivity extends AppCompatActivity {
 
             transaction.replace(R.id.fragment_container, newFragment);
 
-
             transaction.addToBackStack(null);
 
-//            // Commit the transaction
             transaction.commit();
-
-            Log.d(LOG_TAG, "Eventbus worked well");
 
 
 
         }
 
 
-
-
-
-
-
     }
+
+
+
+
+
 }

@@ -1,7 +1,10 @@
 package com.example.android.android_me.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,16 +40,35 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
     private RecyclerView recyclerView;
     StepItemRecyclerViewAdapter stepItemRecyclerViewAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     int result;
     List<String> ingredientsString;
     String string;
     Boolean mTwoPane;
+    Parcelable listState;
+    public final static String LIST_STATE_KEY = "recycler_list_state";
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("myArrayListTwo",(ArrayList) myStepsList);
+    }
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        if(savedInstanceState == null || !savedInstanceState.containsKey("myArrayListTwo")){
+            myStepsList = new ArrayList<>();
+        }
+
+        else{
+            myStepsList = savedInstanceState.getParcelableArrayList("myArrayListTwo");
+        }
+
 
         mTwoPane = getArguments().getBoolean("twoPane");
         myList = getArguments().getParcelableArrayList("myList");
@@ -85,15 +107,16 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
 
-
-
-
-
             recyclerView = (RecyclerView) rootView
                     .findViewById(R.id.my_recycler_view);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+            mLayoutManager = new LinearLayoutManager(getActivity());
+
+            recyclerView.setLayoutManager(mLayoutManager);
             stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myStepsList);
             recyclerView.setAdapter(stepItemRecyclerViewAdapter);
+
+
             TextView textView = (TextView) rootView.findViewById(R.id.text_view);
             textView.setText(string);
 
@@ -131,7 +154,6 @@ public class StepsFragment extends android.support.v4.app.Fragment {
             holder.mContentView.setText(mValues.get(position).getShortDescription());
 
 
-            Steps step = stepItemRecyclerViewAdapter.mValues.get(position);
 
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -149,8 +171,6 @@ public class StepsFragment extends android.support.v4.app.Fragment {
                         Log.d(LOG_TAG, "You clicked a button" + holder.mItem.toString());
 
 
-//                        intent.putExtra("intent", holder.mItem.getId());
-
 
                     } else if( mTwoPane == false){
 
@@ -163,11 +183,6 @@ public class StepsFragment extends android.support.v4.app.Fragment {
                         Log.d(LOG_TAG, "You clicked a button" + holder.mItem.toString());
 
                     }
-
-
-
-
-
 
 
                 }
@@ -200,7 +215,18 @@ public class StepsFragment extends android.support.v4.app.Fragment {
     }
 
 
-    }
+
+
+
+
+
+
+
+
+
+
+
+}
 
 
 
