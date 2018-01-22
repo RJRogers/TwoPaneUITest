@@ -61,7 +61,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
         super.onCreate(savedInstanceState);
 
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("myArrayListTwo")){
+        if(savedInstanceState == null){
             myStepsList = new ArrayList<>();
         }
 

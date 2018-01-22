@@ -20,9 +20,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.AndroidMeActivity" />
-
         <activity android:name=".ui.SecondActivity"
+
+            android:configChanges="orientation|screenSize"
             />
 
     </application>
