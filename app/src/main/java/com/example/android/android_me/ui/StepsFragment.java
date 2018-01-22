@@ -2,6 +2,7 @@ package com.example.android.android_me.ui;
 
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -39,16 +40,16 @@ public class StepsFragment extends android.support.v4.app.Fragment {
     ArrayList<Steps> myStepsListTwo;
     List <Ingredients> ingredients;
 
-    private RecyclerView recyclerView;
+     RecyclerView recyclerView;
     StepItemRecyclerViewAdapter stepItemRecyclerViewAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView.LayoutManager mLayoutManager;
 
     int result;
     List<String> ingredientsString;
     String string;
     Boolean mTwoPane;
     Parcelable listState;
-    public final static String LIST_STATE_KEY = "recycler_list_state";
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -69,6 +70,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
             myStepsListTwo = savedInstanceState.getParcelableArrayList("myArrayListTwo");
 
+
         }
 
 
@@ -77,10 +79,14 @@ public class StepsFragment extends android.support.v4.app.Fragment {
         mTwoPane = getArguments().getBoolean("twoPane");
         myList = getArguments().getParcelableArrayList("myList");
         result = getArguments().getInt("result") - 1;
+
+
         myStepsList = myList.get(result).getSteps();
 
-
+        if(savedInstanceState == null){
             myStepsListTwo.addAll(myStepsList);
+
+        }
 
 
 
@@ -118,6 +124,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_steps, container, false);
 
+
             recyclerView = (RecyclerView) rootView
                     .findViewById(R.id.my_recycler_view);
 
@@ -127,8 +134,13 @@ public class StepsFragment extends android.support.v4.app.Fragment {
             stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myStepsListTwo);
             recyclerView.setAdapter(stepItemRecyclerViewAdapter);
 
+        if(savedInstanceState != null){
+            stepItemRecyclerViewAdapter.notifyDataSetChanged();
+        }
 
-            TextView textView = (TextView) rootView.findViewById(R.id.text_view);
+
+
+        TextView textView = (TextView) rootView.findViewById(R.id.text_view);
             textView.setText(string);
 
 
@@ -163,8 +175,6 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
 
             holder.mContentView.setText(mValues.get(position).getShortDescription());
-
-
 
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -224,15 +234,6 @@ public class StepsFragment extends android.support.v4.app.Fragment {
             }
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 

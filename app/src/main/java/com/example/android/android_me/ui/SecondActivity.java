@@ -78,24 +78,15 @@ public class SecondActivity extends AppCompatActivity {
 
                 mTwoPane = true;
 
-
-
                 Bundle arguments = new Bundle();
-
-
                 arguments.putParcelableArrayList("myList", myList);
                 arguments.putInt("result", result);
                 arguments.putBoolean("twoPane", mTwoPane);
-
                 StepsFragment fragment = new StepsFragment();
-
                 fragment.setArguments(arguments);
-
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, fragment)
                         .commit();
-
-
 
             }
             else {
@@ -103,21 +94,14 @@ public class SecondActivity extends AppCompatActivity {
                 mTwoPane = false;
 
                 Bundle arguments = new Bundle();
-
-
                 arguments.putParcelableArrayList("myList", myList);
                 arguments.putInt("result", result);
                 arguments.putBoolean("twoPane", mTwoPane);
-
                 StepsFragment fragment = new StepsFragment();
-
                 fragment.setArguments(arguments);
-
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, fragment)
                         .commit();
-
-
 
             }
 

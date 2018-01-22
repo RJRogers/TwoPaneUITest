@@ -19,24 +19,17 @@ package com.example.android.android_me.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.android_me.R;
 import com.example.android.android_me.api.RecipeService;
-import com.example.android.android_me.data.AndroidImageAssets;
 import com.example.android.android_me.data.Recipe;
 
 import java.util.ArrayList;
