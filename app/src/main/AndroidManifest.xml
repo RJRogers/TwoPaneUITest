@@ -22,7 +22,7 @@
 
         <activity android:name=".ui.SecondActivity"
 
-            android:configChanges="orientation|screenSize"
+
             />
 
     </application>

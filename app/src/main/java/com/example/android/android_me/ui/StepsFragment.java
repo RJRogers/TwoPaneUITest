@@ -36,6 +36,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
     ArrayList<Recipe> myList;
     List<Steps> myStepsList;
+    ArrayList<Steps> myStepsListTwo;
     List <Ingredients> ingredients;
 
     private RecyclerView recyclerView;
@@ -52,7 +53,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("myArrayListTwo",(ArrayList) myStepsList);
+        outState.putParcelableArrayList("myArrayListTwo",myStepsListTwo);
     }
 
 
@@ -62,18 +63,28 @@ public class StepsFragment extends android.support.v4.app.Fragment {
 
 
         if(savedInstanceState == null){
-            myStepsList = new ArrayList<>();
+            myStepsListTwo = new ArrayList<>();
+        }
+        else{
+
+            myStepsListTwo = savedInstanceState.getParcelableArrayList("myArrayListTwo");
+
         }
 
-        else{
-            myStepsList = savedInstanceState.getParcelableArrayList("myArrayListTwo");
-        }
+
 
 
         mTwoPane = getArguments().getBoolean("twoPane");
         myList = getArguments().getParcelableArrayList("myList");
         result = getArguments().getInt("result") - 1;
         myStepsList = myList.get(result).getSteps();
+
+
+            myStepsListTwo.addAll(myStepsList);
+
+
+
+
         ingredients = myList.get(result).getIngredients();
 
 
@@ -113,7 +124,7 @@ public class StepsFragment extends android.support.v4.app.Fragment {
             mLayoutManager = new LinearLayoutManager(getActivity());
 
             recyclerView.setLayoutManager(mLayoutManager);
-            stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myStepsList);
+            stepItemRecyclerViewAdapter = new StepItemRecyclerViewAdapter(myStepsListTwo);
             recyclerView.setAdapter(stepItemRecyclerViewAdapter);
 
 
@@ -128,11 +139,11 @@ public class StepsFragment extends android.support.v4.app.Fragment {
     public class StepItemRecyclerViewAdapter
             extends RecyclerView.Adapter<StepItemRecyclerViewAdapter.ViewHolder> {
 
-            private final List<Steps> mValues;
+            private final ArrayList<Steps> mValues;
 
 
 
-        public StepItemRecyclerViewAdapter(List<Steps> items) {
+        public StepItemRecyclerViewAdapter(ArrayList<Steps> items) {
 
             mValues = items;
         }

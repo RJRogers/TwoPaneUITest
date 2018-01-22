@@ -72,12 +72,13 @@ public class SecondActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(nameString);
 
+        if(savedInstanceState == null){
 
-        if (findViewById(R.id.android_me_linear_layout) != null) {
+            if (findViewById(R.id.android_me_linear_layout) != null) {
 
-            mTwoPane = true;
+                mTwoPane = true;
 
-            if (savedInstanceState == null) {
+
 
                 Bundle arguments = new Bundle();
 
@@ -95,32 +96,37 @@ public class SecondActivity extends AppCompatActivity {
                         .commit();
 
 
+
+            }
+            else {
+                // We're in single-pane mode and displaying fragments on a phone in separate activities
+                mTwoPane = false;
+
+                Bundle arguments = new Bundle();
+
+
+                arguments.putParcelableArrayList("myList", myList);
+                arguments.putInt("result", result);
+                arguments.putBoolean("twoPane", mTwoPane);
+
+                StepsFragment fragment = new StepsFragment();
+
+                fragment.setArguments(arguments);
+
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, fragment)
+                        .commit();
+
+
+
             }
 
 
 
-        } else {
-            // We're in single-pane mode and displaying fragments on a phone in separate activities
-            mTwoPane = false;
-
-            Bundle arguments = new Bundle();
-
-
-            arguments.putParcelableArrayList("myList", myList);
-            arguments.putInt("result", result);
-            arguments.putBoolean("twoPane", mTwoPane);
-
-            StepsFragment fragment = new StepsFragment();
-
-            fragment.setArguments(arguments);
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit();
-
-
-
         }
+
+
+
 
 
     }
